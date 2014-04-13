@@ -26,9 +26,11 @@
 (defun haskell-echo-type ()
   (interactive)
   (let ((source (thing-at-point 'word)))
+    (accept-process-output haskell-echo-type/process 0 100 t)
+    (setq haskell-echo-type/output-string "")
     (process-send-string haskell-echo-type/process (concat ":t " (add-bracket-symbol source)))
     (process-send-string haskell-echo-type/process "\n")
-    (accept-process-output haskell-echo-type/process 10 0 t)
+    (accept-process-output haskell-echo-type/process 0 500 t)
     (message haskell-echo-type/output-string)))
 
 (defun turn-on-haskell-echo-type ()
