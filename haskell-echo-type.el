@@ -27,7 +27,7 @@
 
 (defun haskell-echo-type ()
   (interactive)
-  (let ((source (add-bracket-symbol (thing-at-point 'sexp))))
+  (let ((source (add-bracket-symbol (thing-at-point 'word))))
     (if source
         (progn (process-send-string haskell-echo-type/process (concat ":t " source))
                (process-send-string haskell-echo-type/process "\n")
