@@ -4,6 +4,7 @@
 (require 'thingatpt)
 
 (defvar-local haskell-echo-type/process nil)
+(defvar-local haskell-echo-type/queue "")
 
 (defun turn-on-haskell-echo-type ()
   (interactive)
@@ -24,6 +25,7 @@
 
 (defun haskell-echo-type ()
   (interactive)
+  (setq haskell-echo-type/queue "")
   (let ((source (thing-at-point 'word)))
     (process-send-string haskell-echo-type/process (concat ":t " (add-bracket-symbol source)))
     (process-send-string haskell-echo-type/process "\n")
@@ -35,25 +37,15 @@
           source
         (concat "(" source ")"))))
 
-(defvar-local haskell-echo-type/queue "")
-
 (defun haskell-echo-type/output-filter (process source)
   (setq haskell-echo-type/queue (concat haskell-echo-type/queue source))
   (let ((source-list (split-string haskell-echo-type/queue "\n")))
     (when (and (haskell-echo-type/success? source-list))
       (haskell-echo-type/success-output source-list))))
 
-;; (defun haskell-echo-type/error-purge (source-list)
-;;   (if (or (> (length source-list) 2)
-;;       (progn (setq haskell-echo-type/queue "")
-;;              nil)
-;;     t))
-
 (defun haskell-echo-type/success? (source-list)
   (and (string= (car (last source-list)) " ")
        (string-match "^[^\W].+ :: .*[A-Z].*" (car (last source-list 2)))))
-;; (not (or (-any? (lambda (s) (string-match "<no location info>:" s)) source-list)
-;;          (-any? (lambda (s) (string-match "<interactive>:" s)) source-list)))))
 
 (defun haskell-echo-type/success-output (source-list)
   (let ((message (s-trim (car (last source-list 2)))))
