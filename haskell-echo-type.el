@@ -64,6 +64,7 @@
        (string-match "^[^\W].+ :: .*[A-Z].*" (car (last source-list 2)))))
 
 (defun haskell-echo-type/success-output (output)
-  (message output))
+  (let ((message-log-max nil))
+    (message "%s" output)))
 
 (provide 'haskell-echo-type)
