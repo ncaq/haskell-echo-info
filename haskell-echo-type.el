@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 (require 'dash)
 (require 'haskell-mode)
 (require 's)
@@ -52,10 +53,10 @@
           source
         (concat "(" source ")"))))
 
-(defun haskell-echo-type/output-filter (process source)
+(defun haskell-echo-type/output-filter (_ source)
   (setq haskell-echo-type/queue (concat haskell-echo-type/queue source))
   (let ((source-list (split-string haskell-echo-type/queue "\n")))
-    (if (and (haskell-echo-type/success? source-list))
+    (if (haskell-echo-type/success? source-list)
         (let ((output (car (last source-list 2))))
           (haskell-echo-type/success-output output)))))
 
