@@ -42,16 +42,16 @@
 (defun haskell-echo-type ()
   (interactive)
   (setq haskell-echo-type/queue "")
-  (let ((source (thing-at-point 'word)))
-    (process-send-string haskell-echo-type/process (concat ":t " (add-bracket-symbol source)))
+  (let ((source (thing-at-point 'sexp)))
+    (process-send-string haskell-echo-type/process (concat ":t " (add-bracket-operator source)))
     (process-send-string haskell-echo-type/process "\n")
     (accept-process-output haskell-echo-type/process 0 500 t)))
 
-(defun add-bracket-symbol (source)
-  (if (stringp source)
-      (if (string-match "[A-z]" source)
-          source
-        (concat "(" source ")"))))
+(defun add-bracket-operator (function-or-operator)
+  (if (stringp function-or-operator)
+      (if (string-match "^[A-z]+$" function-or-operator)
+          function-or-operator
+        (concat "(" function-or-operator ")"))))
 
 (defun haskell-echo-type/output-filter (_ source)
   (setq haskell-echo-type/queue (concat haskell-echo-type/queue source))
