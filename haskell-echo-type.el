@@ -1,21 +1,42 @@
 ;; -*- lexical-binding: t -*-
-(require 'dash)
+
 (require 'haskell-mode)
+
+(require 'dash)
 (require 's)
 (require 'thingatpt)
+
+(defvar-local haskell-echo-type-mode nil)
+(add-to-list 'minor-mode-alist '(haskell-echo-type-mode " het"))
+
+(defun haskell-echo-type-mode (&optional arg)
+  "echo haskell function type on minibuffer"
+  (interactive)
+  (cond
+   ((and (null arg) (not haskell-echo-type-mode))
+    (turn-on-haskell-echo-type-mode))
+   ((and (not (null arg)) (< 0 arg))
+    (turn-on-haskell-echo-type-mode))
+   (t
+    (turn-off-haskell-echo-type-mode))
+   )
+  (force-mode-line-update))
+
 
 (defvar-local haskell-echo-type/process nil)
 (defvar-local haskell-echo-type/queue nil)
 
-(defun turn-on-haskell-echo-type ()
+(defun turn-on-haskell-echo-type-mode ()
   (interactive)
+  (setq haskell-echo-type-mode t)
   (haskell-echo-type/setup)
   (add-hook 'after-save-hook 'haskell-echo-type/reload nil t)
   (add-hook 'kill-buffer-hook 'haskell-echo-type/kill nil t)
   (add-hook 'post-command-hook 'haskell-echo-type nil t))
 
-(defun turn-off-haskell-echo-type ()
+(defun turn-off-haskell-echo-type-mode ()
   (interactive)
+  (setq haskell-echo-type-mode nil)
   (if haskell-echo-type/process
       (haskell-echo-type/kill))
   (remove-hook 'after-save-hook 'haskell-echo-type/reload t)
