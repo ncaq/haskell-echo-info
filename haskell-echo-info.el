@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
-(require 'haskell-mode)
+(require 'haskell-mode-autoloads)
 
 (require 'dash)
 (require 's)
