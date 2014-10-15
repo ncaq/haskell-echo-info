@@ -9,6 +9,7 @@
 (defvar-local haskell-echo-info-mode nil)
 (add-to-list 'minor-mode-alist '(haskell-echo-info-mode " het"))
 
+;;;###autoload
 (defun haskell-echo-info-mode (&optional arg)
   "echo haskell function type on minibuffer"
   (interactive)
@@ -25,6 +26,7 @@
 (defvar-local haskell-echo-info/process nil)
 (defvar-local haskell-echo-info/queue "")
 
+;;;###autoload
 (defun turn-on-haskell-echo-info-mode ()
   (interactive)
   (setq haskell-echo-info-mode t)
@@ -33,6 +35,7 @@
   (add-hook 'kill-buffer-hook 'haskell-echo-info/kill nil t)
   (add-hook 'post-command-hook 'haskell-echo-info nil t))
 
+;;;###autoload
 (defun turn-off-haskell-echo-info-mode ()
   (interactive)
   (setq haskell-echo-info-mode nil)
