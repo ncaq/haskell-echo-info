@@ -1,13 +1,11 @@
 ;; -*- lexical-binding: t -*-
 
-(require 'haskell-mode-autoloads)
-
 (require 'dash)
 (require 's)
 (require 'thingatpt)
 
 (defvar-local haskell-echo-info-mode nil)
-(add-to-list 'minor-mode-alist '(haskell-echo-info-mode " het"))
+(add-to-list 'minor-mode-alist '(haskell-echo-info-mode " hse"))
 
 ;;;###autoload
 (defun haskell-echo-info-mode (&optional arg)
