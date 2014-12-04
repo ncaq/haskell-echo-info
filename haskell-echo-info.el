@@ -69,7 +69,7 @@
 
 (defun add-bracket-operator (function-or-operator)
   (if (stringp function-or-operator)
-      (if (string-match "^[A-z]+$" function-or-operator)
+      (if (-any-p (lambda (c) (= 119 (char-syntax c))) (string-to-list function-or-operator))
           function-or-operator
         (concat "(" function-or-operator ")"))))
 
